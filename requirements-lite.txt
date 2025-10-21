@@ -1,0 +1,9 @@
+# Lite requirements voor Streamlit Cloud deployment
+# Zonder Playwright (niet ondersteund op Streamlit Cloud)
+
+streamlit
+requests
+beautifulsoup4
+lxml
+python-dotenv
+pandas

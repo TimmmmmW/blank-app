@@ -1,10 +1,17 @@
 import streamlit as st
 import json
 from scraper_basic import BasicLoginScraper
-from scraper_advanced import AdvancedLoginScraper
 from bs4 import BeautifulSoup
 import pandas as pd
 from pathlib import Path
+
+# Try to import advanced scraper, but continue if Playwright is not available
+try:
+    from scraper_advanced import AdvancedLoginScraper
+    PLAYWRIGHT_AVAILABLE = True
+except ImportError:
+    PLAYWRIGHT_AVAILABLE = False
+    st.warning("⚠️ Playwright niet beschikbaar. Alleen Basis Scraper is actief. Voor volledige functionaliteit, installeer Playwright lokaal.")
 
 st.set_page_config(
     page_title="Web Scraper met Login",
@@ -18,9 +25,15 @@ st.markdown("Een krachtige webscraper die kan inloggen en data kan extracten van
 # Sidebar voor configuratie
 st.sidebar.header("⚙️ Configuratie")
 
+# Scraper type selectie
+if PLAYWRIGHT_AVAILABLE:
+    scraper_options = ["Basis (requests)", "Geavanceerd (Playwright)"]
+else:
+    scraper_options = ["Basis (requests)"]
+
 scraper_type = st.sidebar.selectbox(
     "Type Scraper",
-    ["Basis (requests)", "Geavanceerd (Playwright)"],
+    scraper_options,
     help="Basis is sneller, Geavanceerd kan JavaScript aan"
 )
 
@@ -36,9 +49,15 @@ base_url = st.sidebar.text_input(
 # Login configuratie
 st.sidebar.subheader("🔐 Login Instellingen")
 
+# Login methodes afhankelijk van scraper type
+if scraper_type == "Geavanceerd (Playwright)" and PLAYWRIGHT_AVAILABLE:
+    login_options = ["Formulier", "Basic Auth", "API Token", "Cookies", "Handmatig (alleen Geavanceerd)"]
+else:
+    login_options = ["Formulier", "Basic Auth", "API Token"]
+
 login_method = st.sidebar.selectbox(
     "Login Methode",
-    ["Formulier", "Basic Auth", "API Token", "Cookies", "Handmatig (alleen Geavanceerd)"]
+    login_options
 )
 
 # Tabs voor verschillende functionaliteiten
