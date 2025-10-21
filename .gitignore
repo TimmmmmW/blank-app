@@ -1,5 +1,22 @@
 .streamlit/secrets.toml
 
+# Web scraper specific
+*.json
+*.csv
+*.png
+*.jpg
+*.jpeg
+cookies.json
+session_cookies.json
+articles.json
+articles.csv
+scraped_data.*
+screenshot*.png
+dashboard.png
+
+# Playwright
+playwright-state/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
